@@ -1,0 +1,14 @@
+This folder contains integration packages for Visual Studio 2012.
+The IdaNetBuilder program should be able to build the latest version
+of the integration package, provided a non Express version (either
+VS2010 or VS2012) is installed on your machine. For those that don't
+own such a licence, we provide an already built version of the package.
+
+Starting with revision 30 the IdaNetBuilder detects the lack of elements
+required to build the integration package and will automatically
+attempt to download the latest package version from SourceForge.
+
+Notwithstanding wether the IdaNetBuilder built it by itself or
+downloaded it, the package will be stored under
+%LOCALAPPDATA%\idaplug\bin directory. Just double click the package
+to install it.
