@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <IDAFlavor Condition=" '$(IDAFlavor)' == '' ">IDA32</IDAFlavor>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F04CB7A-895F-41F9-9888-0E10ED3573F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IdaNet</RootNamespace>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IDAFlavor)' == 'IDA64'">
+    <DefineConstants>$(DefineConstants);__EA64__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;$(DefineConstants)</DefineConstants>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>IdaNetKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CppCompatibility\CppTyping.cs" />
+    <Compile Include="CppCompatibility\IMarshalable.cs" />
+    <Compile Include="IdaInterop\AnalysisFlags.cs" />
+    <Compile Include="IdaInterop\AnalysisFlagsEx.cs" />
+    <Compile Include="IdaInterop\Area.cs" />
+    <Compile Include="IdaInterop\AreaControlBlock.cs" />
+    <Compile Include="IdaInterop\AreaSet.cs" />
+    <Compile Include="IdaInterop\AsciiFlags.cs" />
+    <Compile Include="IdaInterop\AssemblerDescriptor.cs" />
+    <Compile Include="IdaInterop\AssemblerFeatures.cs" />
+    <Compile Include="IdaInterop\AssemblerSyntax.cs" />
+    <Compile Include="IdaInterop\CloseFormOption.cs" />
+    <Compile Include="IdaInterop\CodeCrossReferenceType.cs" />
+    <Compile Include="IdaInterop\CommentFlags.cs" />
+    <Compile Include="IdaInterop\CompilerInfo.cs" />
+    <Compile Include="IdaInterop\CrossReferencesFlags.cs" />
+    <Compile Include="IdaInterop\CrossReferencing.cs" />
+    <Compile Include="IdaInterop\cust_fix.cs" />
+    <Compile Include="IdaInterop\DatabaseInfo.cs" />
+    <Compile Include="IdaInterop\DatabaseMiscFlags.cs" />
+    <Compile Include="IdaInterop\DataCrossReferenceType.cs" />
+    <Compile Include="IdaInterop\DelimiterStyle.cs" />
+    <Compile Include="IdaInterop\DemangledNamesStyle.cs" />
+    <Compile Include="IdaInterop\DockPositionFlags.cs" />
+    <Compile Include="IdaInterop\ExportedDataIdentifier.cs" />
+    <Compile Include="IdaInterop\FileType.cs" />
+    <Compile Include="IdaInterop\Function.cs" />
+    <Compile Include="IdaInterop\FunctionFlags.cs" />
+    <Compile Include="IdaInterop\GeneralFlags.cs" />
+    <Compile Include="IdaInterop\IdcChkKeyCode.cs" />
+    <Compile Include="IdaInterop\idp_notify.cs" />
+    <Compile Include="IdaInterop\Instruction.cs" />
+    <Compile Include="IdaInterop\InstructionDescriptor.cs" />
+    <Compile Include="IdaInterop\InstructionFeature.cs" />
+    <Compile Include="IdaInterop\InstructionFlags.cs" />
+    <Compile Include="IdaInterop\Intel.cs" />
+    <Compile Include="IdaInterop\IntelAuxiliaryPrefix.cs" />
+    <Compile Include="IdaInterop\IntelInstruction.cs" />
+    <Compile Include="IdaInterop\IntelInstructionCodes.cs" />
+    <Compile Include="IdaInterop\IntelOperand.cs" />
+    <Compile Include="IdaInterop\IntelRegisters.cs" />
+    <Compile Include="IdaInterop\InteropConstants.cs" />
+    <Compile Include="IdaInterop\EntryPoint.cs" />
+    <Compile Include="IdaInterop\Interactivity.cs" />
+    <Compile Include="IdaInterop\ListNameFlags.cs" />
+    <Compile Include="IdaInterop\MarshalingUtils.cs" />
+    <Compile Include="IdaInterop\Member.cs" />
+    <Compile Include="IdaInterop\MemberProperties.cs" />
+    <Compile Include="IdaInterop\MemoryManagement.cs" />
+    <Compile Include="IdaInterop\MessageBoxKind.cs" />
+    <Compile Include="IdaInterop\NameType.cs" />
+    <Compile Include="IdaInterop\NetNode.cs" />
+    <Compile Include="IdaInterop\OpenFormOption.cs" />
+    <Compile Include="IdaInterop\Operand.cs" />
+    <Compile Include="IdaInterop\OperandFlags.cs" />
+    <Compile Include="IdaInterop\OperandType.cs" />
+    <Compile Include="IdaInterop\OperandValueType.cs" />
+    <Compile Include="IdaInterop\PrefixFlags.cs" />
+    <Compile Include="IdaInterop\Processor.cs" />
+    <Compile Include="IdaInterop\ProcessorFeatures.cs" />
+    <Compile Include="IdaInterop\ProcessorId.cs" />
+    <Compile Include="IdaInterop\QVector.cs" />
+    <Compile Include="IdaInterop\Segment.cs" />
+    <Compile Include="IdaInterop\SegmentAlignement.cs" />
+    <Compile Include="IdaInterop\SegmentBitness.cs" />
+    <Compile Include="IdaInterop\SegmentCombination.cs" />
+    <Compile Include="IdaInterop\SegmentFlags.cs" />
+    <Compile Include="IdaInterop\SegmentPermission.cs" />
+    <Compile Include="IdaInterop\SegmentType.cs" />
+    <Compile Include="IdaInterop\SetMenuFlags.cs" />
+    <Compile Include="IdaInterop\Structure.cs" />
+    <Compile Include="IdaInterop\StructureProperties.cs" />
+    <Compile Include="IdaInterop\SwitchDefinition.cs" />
+    <Compile Include="IdaInterop\SwitchDefinitionEx.cs" />
+    <Compile Include="IdaInterop\SwitchDefinitionFlags.cs" />
+    <Compile Include="IdaInterop\SwitchDefinitionFlagsEx.cs" />
+    <Compile Include="IdaInterop\UiNotificationType.cs" />
+    <Compile Include="IIdaPlugin.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Native.cs" />
+    <Compile Include="PluginBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CppCompatibility\QtTyping.cs" />
+    <Compile Include="CppCompatibility\Vector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IdaNetKey.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

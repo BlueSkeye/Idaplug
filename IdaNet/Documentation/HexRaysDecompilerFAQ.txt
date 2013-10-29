@@ -1,0 +1,64 @@
+
+Frequently asked questions
+Currently the list is very short but it will grow with time.
+
+    The output is excessively short for the input function...
+    The following code <...> does not look correct. Can this be fixed?
+    I loaded an old database and the decompiler failed on every single function!
+    The decompiler failed on a function. Should I file a bugreport?
+    The decompiler output is not optimal. Can it be improved?
+    Floating point instructions are displayed as assembly statements. Why?
+    SSE instructions are displayed as assembly statements. Why?
+
+The output is excessively short for the input function. Some code which was present in the assembly form is not visible in the output.
+
+    This can happen if the decompiler decided that the result of these computations is not used (so-called dead code). The dead code is not included in the output.
+
+    One very common case of this is a function, which returns the result in an unusual register, e.g. ECX. Please explicitly specify the function type and tell IDA the exact location of the return value. For example:
+
+    int __usercall myfunc<ecx>(void);
+
+    Read IDA help pages about the user defined calling conventions for more info.
+
+    Another quite common case is a function whose type has been guessed incorrectly by IDA or the decompiler. For example, if the guessed type is
+
+    int func(void);
+
+    but the correct function type is
+
+    int func(int x, int y, int z);
+
+    then all computations of the function arguments will be removed from the output. The remedy is very simple: tell IDA the correct function type and the argument computations will appear in the output.
+
+    In general, if the input information (function types) is incorrect, the output will be incorrect too. So please check them! 
+
+The following code
+DllUnregisterServer proc near CommandLine = byte ptr -274h hObject = _PROCESS_INFORMATION ptr -6Ch xor ebx, ebx mov [ebp+CommandLine], bl
+is being translated into:
+char CommandLine; // [sp+0h] [bp-274h]@1 CommandLine = 0;
+This does not look correct. Can this be fixed?
+
+    This happens because the decompiler does not perform the type recovery. To correct the output, modify the definition of CommandLine in IDA. For that, open the stack frame (Edit, Functions, Open stack frame), locate CommandLine and set its type to be an array (Edit, Functions, Set function type). The end result will be:
+    CommandLine[0] = 0;
+    (the current version of the plugin might require a restart). 
+
+I loaded an old database and the decompiler failed on every single function!
+
+    Old databases do not contain some essential information. If you want to decompile them, first let IDA reanalyze the database (right click on the lower left corner of the main window and select Reanalyze). You will also need to recreate indirect (table) jump instructions, otherwise the switch idioms will not be recognized and decompilation of the functions containing them will fail. 
+
+The decompiler failed on a function. Should I file a bugreport?
+
+    In general, there is no need to file a bugreport if the decompiler gracefully fails. A failure is not necessarily a bug. Please read the graceful failures (https://www.hex-rays.com/products/decompiler/manual/failures.shtml#grace) section to learn how to proceed. 
+
+The decompiler output is not optimal. Can it be improved?
+
+    Sure, it can. However, given that many decompilation subproblems are still open, even simple things can take enormous time. Meanwhile we recommend you to use a text editor to modify the pseudocode. 
+
+Floating point instructions are displayed as assembly statements. Why?
+
+    Please read https://www.hex-rays.com/products/decompiler/manual/fpu.shtml. 
+
+SSE instructions are displayed as assembly statements. Why?
+
+    Please read https://www.hex-rays.com/products/decompiler/manual/intrinsics.shtml. 
+
