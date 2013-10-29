@@ -1,0 +1,7 @@
+﻿Any source code file that is to be copied to the target project directory must be in the
+root directory of this program. Should the copy be done in a subdirectory of the target
+project directory this is to be handled in the vstemplate file using the TargetFileName
+attribute.
+
+Additionally it looks like the file must be referenced by the resulting project file
+otherwise it is not copied to the target project.

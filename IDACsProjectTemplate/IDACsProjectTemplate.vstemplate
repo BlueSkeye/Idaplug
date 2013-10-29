@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>IDA C# project template</Name>
+    <Description>A C# project template that let you create an IDA Pro plugin.</Description>
+    <Icon>IDACsProjectTemplate.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>38b2513d-d359-4ad5-abcd-c95ad0a1c162</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>IDACsProjectTemplate</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Plugin.cs" OpenInEditor="true">Plugin.cs</ProjectItem>
+      <!-- These are the C++ shim related files. -->
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\BridgeToNative.cpp">BridgeToNative.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\BridgeToNative.h">BridgeToNative.h</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\Logging.cpp">Logging.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\Logging.h">Logging.h</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\Native.cpp">Native.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\Native.h">Native.h</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="CppSrc\PluginDef.cpp">PluginDef.cpp</ProjectItem>
+
+      <ProjectItem ReplaceParameters="false" TargetFileName="ida.targets">ida.targets</ProjectItem>
+    </Project>
+  </TemplateContent>
+  <!--<WizardExtension>
+    <Assembly>IDACsProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=5c72c23904867c19</Assembly>
+    <FullClassName>IDACsProjectWizard.Wizard</FullClassName>
+  </WizardExtension>-->
+</VSTemplate>
