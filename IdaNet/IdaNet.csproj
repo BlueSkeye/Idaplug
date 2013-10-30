@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <IDAFlavor Condition=" '$(IDAFlavor)' == '' ">IDA32</IDAFlavor>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9F04CB7A-895F-41F9-9888-0E10ED3573F2}</ProjectGuid>
@@ -13,8 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup>
+    <AssemblyName>IdaNet$(IDAFlavor)</AssemblyName>
+    <OutputPath>bin\$(Configuration)\$(IDAFlavor)\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>TRACE</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
@@ -22,9 +21,8 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
     <ErrorReport>prompt</ErrorReport>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IDAFlavor)' == 'IDA64'">
+  <PropertyGroup Condition="'$(IDAFlavor)' == '64'">
     <DefineConstants>$(DefineConstants);__EA64__</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -138,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="IdaNetKey.snk" />
+    <None Include="SingleVersion.targets" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">
@@ -145,16 +144,7 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
+  <Import Project="SingleVersion.targets" />
+  <!--<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   -->
 </Project>

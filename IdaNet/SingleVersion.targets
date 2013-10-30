@@ -1,0 +1,15 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Build">
+    <Message Text="Building IDA32 flavor" Importance="high" />
+    <MSBuild Projects="IdaNet.csproj" Properties="IDAFlavor=32" Targets="Build"/>
+    <Message Text="Building IDA64 flavor" Importance="high" />
+    <MSBuild Projects="IdaNet.csproj" Properties="IDAFlavor=64" Targets="Build"/>
+  </Target>
+  <!--<Target Name="Rebuild">
+    <MSBuild Projects="IdaNet.csproj" Properties="IDAFlavor=IDA32" Targets="Rebuild"/>
+    <MSBuild Projects="IdaNet.csproj" Properties="IDAFlavor=IDA64" Targets="Rebuild"/>
+  </Target>-->
+  <!-- Importing the following targets will override the above tasks. The import will only be triggered
+       when the above taregts would fire that is if we are invoked by VS itself. -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition=" '$(IDAFlavor)' != '' "/>
+</Project>
