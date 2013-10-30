@@ -1,0 +1,8 @@
+﻿Prior to using this project you MUST install the IdaNet32 library into the GAC.
+
+- Open the HelloWorld.csproj file in Visual Studio 2012 and build the project.
+- In your user profile define an IDAPATH environment variable which value is the full path
+  to your installed IDA 6.4 version.
+- Copy the HelloWorld.plw library in the plugins directory under %IDAPATH%
+- Assert the %LOCALAPPDATA%\idaplug\logs directory exists and otherwise create it.
+- From a command prompt launch the TestHelloWorld.cmd script.
