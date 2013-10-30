@@ -1,0 +1,41 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+        <ProductVersion>3.0</ProductVersion>
+        <ProjectGuid>{425076B4-3B1D-4582-9EDC-28F6925A5B41}</ProjectGuid>
+        <SchemaVersion>2.0</SchemaVersion>
+        <OutputName>IdaPlug</OutputName>
+        <OutputType>Package</OutputType>
+        <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+        <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+        <SetMsiAssemblyNameFileVersion>True</SetMsiAssemblyNameFileVersion>
+        <!--<DefineSolutionProperties>false</DefineSolutionProperties>-->
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+        <DefineConstants>Debug</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\IdaNet\IdaNet.csproj">
+            <Name>IdaNet</Name>
+            <Project>{9F04CB7A-895F-41F9-9888-0E10ED3573F2}</Project>
+            <Private>True</Private>
+            <DoNotHarvest>True</DoNotHarvest>
+            <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+            <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+        </ProjectReference>
+        <ProjectReference Include="..\IDACsVSIX\IDACsVSIX.csproj">
+            <Name>IDACsVSIX</Name>
+            <Project>{483193AB-9376-4F21-92E1-1A1024D91C2E}</Project>
+            <Private>True</Private>
+            <DoNotHarvest>True</DoNotHarvest>
+            <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+            <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Product.wxs" />
+    </ItemGroup>
+    <Import Project="$(WixTargetsPath)" />
+</Project>

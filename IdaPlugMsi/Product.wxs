@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See this link for major upgrades :
+	 http://blogs.technet.com/b/alexshev/archive/2008/02/15/from-msi-to-wix-part-8-major-upgrade.aspx
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <?define ProductName = "Ida#Plug"?>
+    <!-- Never change this -->
+    <?define UpgradeCode = "16AFFBAF-0970-4140-8AD2-43CA9F153C74"?>
+    <!-- Don't change this unless this is a major upgrade -->
+    <?define ProductCode = "*"?>
+    <!-- Change this for small updates -->
+    <?define ProductVersion = "1.0.6.0"?>
+    <?define RTMProductVersion = "1.0.0.0"?>
+    <Product Id="$(var.ProductCode)"
+			 Name="$(var.ProductName)"
+			 Language="1033"
+			 Version="$(var.ProductVersion)"
+			 Manufacturer="ACME"
+			 UpgradeCode="$(var.UpgradeCode)">
+        <Package InstallerVersion="500"
+                 Description="$(var.ProductName) installation package."
+                 Id="*"
+                 InstallPrivileges="elevated"
+                 Compressed="yes"
+                 InstallScope="perMachine" />
+
+		<!--
+		<Upgrade Id='$(var.UpgradeCode)'>
+			<UpgradeVersion Minimum='$(var.ProductVersion)'
+							IncludeMinimum='no'
+							OnlyDetect='yes'
+							Property='NEWPRODUCTFOUND' />
+			<UpgradeVersion Minimum='$(var.RTMProductVersion)'
+							IncludeMinimum='yes'
+							Maximum='$(var.ProductVersion)'
+							IncludeMaximum='no'
+							Property='UPGRADEFOUND' />
+		</Upgrade>
+		-->
+
+		<MajorUpgrade AllowDowngrades="no"
+                      IgnoreRemoveFailure="yes"
+                      MigrateFeatures="yes"
+                      Schedule="afterInstallInitialize"
+                      DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <Media Id="1" Cabinet="myapplication.cab" EmbedCab="yes" />
+		
+		<!--
+		<CustomAction Id="PreventDowngrading"
+					    Error="A newer version of [ProductName] is already installed." />
+		<InstallExecuteSequence>
+			<Custom Action="PreventDowngrading"
+					After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+			<RemoveExistingProducts After="InstallFinalize" />
+		</InstallExecuteSequence>
+		<InstallUISequence>
+			<Custom Action="PreventDowngrading"
+					After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+		</InstallUISequence>
+        -->
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="ProgramFilesFolder">
+            <!-- Add the IdaNet.dll and IdaNet64.dll files to GAC_32. The same files are later
+					also added to the product directory for the developper to reference it from her
+					projects.
+			-->
+			<Directory Id="GAC" Name="GAC"> 
+                <Component Id="GACEDIdaNet32Dll" Guid="AE5C3D43-7182-45E2-B782-285356526D51">
+					<File Id="GACEDIdaNet32Dll" Name="IdaNet32.dll" Source="..\IdaNet\bin\Debug\32\IdaNet32.dll" KeyPath="yes" Assembly=".net" />
+				</Component>
+				<Component Id="GACEDIdaNet64Dll" Guid="CE06423B-8353-449A-B0F1-F37794256AB3">
+					<File Id="GACEDIdaNet64Dll" Name="IdaNet64.dll" Source="..\IdaNet\bin\Debug\64\IdaNet64.dll" KeyPath="yes" Assembly=".net" />
+				</Component>
+            </Directory>
+		</Directory>
+        <Directory Id="LocalAppDataFolder">
+			<!-- Set installation directory to and 'idaplug' directory un %LOCALAPPDATA% -->
+                <Directory Id="INSTALLFOLDER" Name="idaplug">
+					<Component Id="IFRoot" Guid="4ACBC805-9FD9-49B3-AF7C-93DA2C666318" SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either">
+						<RemoveFolder Id="IFRoot" On="uninstall" />
+						<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+                        <CreateFolder/>
+					</Component>
+	  				
+					<!-- Add a 'bin' directory under installation directory. -->
+					<Directory Id="IFBin" Name="bin">
+						<Component Id="IFBin" Guid="DBDA22C9-59CC-49D4-B32C-C6B23269D642" SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either">
+							<RemoveFolder Id="IFBin" On="uninstall" />
+							<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+							<CreateFolder/>
+						</Component>
+						<!-- Add the IdaNet32.dll file. This file will be used when being referenced in projects. -->
+						<Component Id="IdaNet32Dll" Guid="893C5B14-732A-4552-930B-3DEBCA8764A8">
+							<RemoveFile Id="IdaNet32Dll" Name="IdaNet32.dll" On="uninstall" />
+							<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+							<File Id="IdaNet32Dll" Name="IdaNet32.dll" Source="..\IdaNet\bin\Debug\32\IdaNet32.dll" DiskId="1" />
+						</Component>
+						<Component Id="IdaNet64Dll" Guid="8568AFFF-11CB-4ED9-B10A-8302A4FC54A5">
+							<RemoveFile Id="IdaNet64Dll" Name="IdaNet64.dll" On="uninstall" />
+							<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+							<File Id="IdaNet64Dll" Name="IdaNet64.dll" Source="..\IdaNet\bin\Debug\64\IdaNet64.dll" DiskId="1" />
+						</Component>
+						<!-- Add the VSIX package file. -->
+						<Component Id="VSIXPackage" Guid="1381B13E-6110-4E8A-B6A3-BFA75502AA70">
+							<!-- Notice the name is a special case. VS doesn't recognize properly the expected 
+							        target extension and mistakenly expects a .dll one. -->
+							<RemoveFile Id="VSIXPackage" Name="$(var.IDACsVSIX.TargetName).vsix" On="uninstall" />
+							<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+							<File Id="VSIXPackage"
+                                    Name="$(var.IDACsVSIX.TargetName).vsix"
+								    Source="$(var.IDACsVSIX.TargetDir)$(var.IDACsVSIX.TargetName).vsix" DiskId="1" />
+						</Component>
+					</Directory>
+					
+					<!-- Add both a 'logs' directory under installation directory. -->
+					<Directory Id="IFLogs" Name="logs">
+						<Component Id="IFLogs" Guid="AD1C0ACD-9591-400C-9B86-3182FAC5EF0A" SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either">
+							<RemoveFolder Id="IFLogs" On="uninstall" />
+							<RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+							<CreateFolder/>
+						</Component>
+					</Directory>
+	            </Directory>
+            </Directory>
+        </Directory>
+		<Feature Id="MainFeature" Title="[ProductName] main feature" Level="1">
+			<ComponentRef Id="IFRoot" />
+			<ComponentRef Id="IFBin" />
+			<ComponentRef Id="IFLogs" />
+			<ComponentRef Id="IdaNet32Dll" />
+			<ComponentRef Id="IdaNet64Dll" />
+			<ComponentRef Id="GACEDIdaNet32Dll" />
+			<ComponentRef Id="GACEDIdaNet64Dll" />
+			<ComponentRef Id="VSIXPackage" />
+		</Feature>
+    </Product>
+</Wix>
