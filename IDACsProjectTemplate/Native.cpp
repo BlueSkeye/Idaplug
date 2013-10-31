@@ -15,7 +15,7 @@
 #include "BridgeToNative.h"
 
 #using <ManagedPlugin.netmodule>
-#using <IdaNet.dll>
+#using <IdaNet32.dll>
 using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace $safeprojectname$;
