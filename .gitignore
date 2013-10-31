@@ -18,3 +18,5 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 *.pdb
+# Ignore IDA result databases.
+*.idb
