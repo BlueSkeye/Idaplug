@@ -45,8 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="CppCompatibility\CppTyping.cs" />
     <Compile Include="CppCompatibility\IMarshalable.cs" />
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="IdaDatabase.cs" />
     <Compile Include="IdaInterop\AnalysisFlags.cs" />
     <Compile Include="IdaInterop\AnalysisFlagsEx.cs" />
     <Compile Include="IdaInterop\Area.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="IdaInterop\SwitchDefinitionFlags.cs" />
     <Compile Include="IdaInterop\SwitchDefinitionFlagsEx.cs" />
     <Compile Include="IdaInterop\UiNotificationType.cs" />
+    <Compile Include="IdaNetException.cs" />
     <Compile Include="IIdaPlugin.cs" />
     <Compile Include="Messages.Designer.cs">
       <AutoGen>True</AutoGen>
