@@ -1,4 +1,4 @@
 SET LogFile=%TEMP%\HELLOWORLD.LOG
-"%IDAPATH%\idaw.exe" -A -B -P+ -a "-L%LogFile%" "-S.\HELLOWORLD.IDC" -z00030028 "%WinDir%\system32\NOTEPAD.EXE"
+"%IDAPATH%\idaw.exe" -A -B -P+ -a "-L%LogFile%" "-S.\HELLOWORLD.IDC" -z00030028 -o.\NOTEPAD.IDB "%WinDir%\system32\NOTEPAD.EXE"
 NOTEPAD "%LogFile%"
-NOTEPAD "%LOCALAPPDATA%idaplug\logs\HELLOWORLD.LOG"
+NOTEPAD "%LOCALAPPDATA%\idaplug\logs\HELLOWORLD.LOG"
