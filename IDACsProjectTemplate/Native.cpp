@@ -368,7 +368,6 @@ void idaapi TerminatePlugin()
 		_unmanagedPluginWrapper.pfnTerminate();
 		delete toManagedBridge;
 	}
-	Log(TEXT("Terminating plugin :\r\n"), 0);
 }
 
 #pragma managed(pop)
