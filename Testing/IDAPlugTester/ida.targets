@@ -1,0 +1,150 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <V10CppProps>$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\v100\Microsoft.Cpp.Win32.v100.props</V10CppProps>
+        <V11CppProps>$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\v110\Microsoft.Cpp.Win32.v110.props</V11CppProps>
+    </PropertyGroup>
+
+    <Import Project="$(V11CppProps)" Condition="Exists('$(V11CppProps)')"/>
+    <Import Project="$(V10CppProps)" Condition="Exists('$(V10CppProps)')"/>
+
+    <UsingTask TaskName="CL" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <UsingTask TaskName="Link" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <UsingTask TaskName="SetEnv" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+    <UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+
+    <!-- Items involved in creating the final plugin.
+    DO NOT MODIFY unles you're knowledgeable of what kind of build breaking you may expect -->
+    <ItemGroup>
+        <LinkableItems Include="BridgeToNative.obj"/>
+        <LinkableItems Include="Logging.obj"/>
+
+        <LinkableItems Include="Native.obj"/>
+        <LinkableItems Include="PluginDef.obj"/>
+        <LinkableItems Include="$(TargetName).netmodule"/>
+
+        <LinkableItems Include="user32.lib"/>
+        <LinkableItems Include="ole32.lib"/>
+        <LinkableItems Include="ida.lib"/>
+        <LinkableItems Include="Shell32.lib"/>
+
+        <LinkLibPath Include="C:\Program Files (x86)\IDA 6.4\idasdk64\lib\x86_win_vc_64" />
+        <LinkLibPath Include="obj\$(Configuration)" />
+
+        <FinalLinkOutput Include=".\obj\$(Configuration)\$(AssemblyName).plw"/>
+    </ItemGroup>
+    <ItemGroup>
+        <AddModules Include=".\obj\$(Configuration)\BridgeToNative.obj"/>
+    </ItemGroup>
+
+    <!-- Items involved in NativeBridge compilation.
+    DO NOT MODIFY unles you're knowledgeable of what kind of build breaking you may expect -->
+    <ItemGroup>
+        <!-- UITrampoline.cpp is now obsolete. -->
+        <NativeBasicSources Include=".\CppSrc\BridgeToNative.cpp"/>
+        <NativeBasicSources Include=".\CppSrc\Logging.cpp"/>
+
+        <NativeBridgeSources Include=".\CppSrc\Native.cpp"/>
+        <NativeBridgeSources Include=".\CppSrc\PluginDef.cpp"/>
+
+        <NativeIncludeDirectories Include="C:\Program Files (x86)\IDA 6.4\idasdk64\include"/>
+        <NativeBridgeUsingDirectories Include=".\obj\$(Configuration)"/>
+
+        <NativePreprocessorDefinitions Include="_DEBUG"/>
+        <NativePreprocessorDefinitions Include="__IDP__"/>
+        <NativePreprocessorDefinitions Include="__NT__"/>
+        <NativePreprocessorDefinitions Include="UNICODE"/>
+        <NativePreprocessorDefinitions Include="_UNICODE"/>
+        <NativePreprocessorDefinitions Include="USE_DANGEROUS_FUNCTIONS"/>
+        <NativePreprocessorDefinitions Include="_USRDLL"/>
+        <NativePreprocessorDefinitions Include="WIN32"/>
+        <NativePreprocessorDefinitions Include="_WINDLL"/>
+        <NativePreprocessorDefinitions Include="_WINDOWS"/>
+    </ItemGroup>
+
+    <Target Name="SetBuildDefaultEnvironmentVariables">
+        <!--Condition="'$(UseEnv)' != 'true'">-->
+        <SetEnv Name   ="PATH"
+                Value  ="$(ExecutablePath)"
+                Prefix ="false">
+            <Output TaskParameter="OutputEnvironmentVariable" PropertyName="Path"/>
+        </SetEnv>
+        <SetEnv Name   ="LIB"
+                Value  ="$(LibraryPath)"
+                Prefix ="false">
+            <Output TaskParameter="OutputEnvironmentVariable" PropertyName="LIB"/>
+        </SetEnv>
+        <SetEnv Name   ="LIBPATH"
+                Value  ="$(ReferencePath)"
+                Prefix ="false">
+            <Output TaskParameter="OutputEnvironmentVariable" PropertyName="LIBPATH"/>
+        </SetEnv>
+        <SetEnv Name   ="INCLUDE"
+                Value  ="$(IncludePath)"
+                Prefix ="false" >
+            <Output TaskParameter="OutputEnvironmentVariable" PropertyName="INCLUDE"/>
+        </SetEnv>
+        <PropertyGroup>
+            <TempUsingDirectory>@(IntermediateAssembly->'%(RootDir)')@(IntermediateAssembly->'%(Directory)')</TempUsingDirectory>
+        </PropertyGroup>
+        <ItemGroup>
+            <AIDirectories Include="$(TempUsingDirectory)" />
+            <AIDirectories Include="$(LocalAppData)\idaplug\bin"/>
+        </ItemGroup>
+        <ItemGroup>
+            <LinkLibPath Include="$(TempUsingDirectory)" />
+        </ItemGroup>
+    </Target>
+
+    <!-- Build basic C++ managed/unmanaged code. Usuually a one time operation. -->
+    <!-- Will trigger native basics compilation before CoreCompile-->
+    <Target Name="BeforeResolveReferences"
+            DependsOnTargets="SetBuildDefaultEnvironmentVariables">
+        <Message Importance="High" Text="BUILDING NATIVE BASICS" />
+        <CL Sources="@(NativeBasicSources)"
+            AdditionalIncludeDirectories="@(NativeIncludeDirectories)"
+            CompileAsManaged="true"
+            DebugInformationFormat="ProgramDatabase"
+            ObjectFileName=".\obj\$(Configuration)\"
+            PreprocessorDefinitions="@(NativePreprocessorDefinitions)"
+        />
+    </Target>
+
+    <!-- Build C++ managed code relying on the Plugin class. -->
+    <Target Name="BuildNativeBridge"
+            DependsOnTargets="SetBuildDefaultEnvironmentVariables">
+        <Message Importance="High" Text="BUILDING NATIVE BRIDGE" />
+        <CL Sources="@(NativeBridgeSources)"
+            AdditionalIncludeDirectories="@(NativeIncludeDirectories)"
+            AdditionalUsingDirectories="@(AIDirectories)"
+            CompileAsManaged="true"
+            DebugInformationFormat="ProgramDatabase"
+            ObjectFileName=".\obj\$(Configuration)\"
+            PreprocessorDefinitions="@(NativePreprocessorDefinitions)"
+        />
+    </Target>
+
+    <!-- Perform final linking -->
+    <Target Name="ProduceFinalDll"
+            DependsOnTargets="SetBuildDefaultEnvironmentVariables">
+        <Message Importance="High" Text="PRODUCING FINAL DLL" />
+        <Link Sources="@(LinkableItems)"
+          AdditionalLibraryDirectories="@(LinkLibPath)"
+          GenerateDebugInformation="true"
+          GenerateManifest="false"
+          LinkDLL="true"
+          LinkTimeCodeGeneration="UseLinkTimeCodeGeneration"
+          OutputFile="@(FinalLinkOutput)"
+          SubSystem="Console"
+      />
+
+        <!-- Also remove some unwanted files currently referenced as intermediate assemblies that should
+      be ignored -->
+        <ItemGroup>
+            <AddModules Remove="@(AddModules)"/>
+        </ItemGroup>
+        <ItemGroup Condition="'true' == 'true'">
+            <IntermediateAssembly Remove="@(IntermediateAssembly)" />
+            <IntermediateAssembly Include="@(FinalLinkOutput)"/>
+        </ItemGroup>
+    </Target>
+</Project>

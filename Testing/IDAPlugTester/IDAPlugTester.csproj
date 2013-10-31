@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="CL" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <UsingTask TaskName="Link" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C4590771-621D-4FC8-8D30-4DA601695C3B}</ProjectGuid>
+    <OutputType>Module</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>std</RootNamespace>
+    <AssemblyName>IDAPlugTester</AssemblyName>
+    <TargetName>ManagedPlugin</TargetName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="IdaNet32, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bbed5ac063856b59, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <!-- These are required for the template to comlete successfully, until we can find a way to
+  copy those additional files in our wizard. -->
+  <ItemGroup>
+    <None Include="ida.targets" />
+    <None Include="CppSrc\BridgeToNative.h" />
+    <None Include="CppSrc\BridgeToNative.cpp" />
+    <None Include="CppSrc\Logging.h" />
+    <None Include="CppSrc\Logging.cpp" />
+    <None Include="CppSrc\Native.h" />
+    <None Include="CppSrc\Native.cpp" />
+    <None Include="CppSrc\PluginDef.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README" />
+  </ItemGroup>
+  <PropertyGroup>
+    <!-- Add some custom additional targets after CoreCompile from C# targets. -->
+    <TargetsTriggeredByCompilation>
+      $(TargetsTriggeredByCompilation);
+      BuildNativeBridge;
+      ProduceFinalDll
+    </TargetsTriggeredByCompilation>
+    <!-- Triggers a target that will ensure the obj\$(ProjectConfiguration.Platform)\$(Configuration) exists before assembly references resolution. -->
+    <!-- TODO : This doesn't seems to be accounted for. Created the directory manuaklly in the mean time. -->
+    <ResolveAssemblyReferencesDependsOn>
+      EnsureAssemblyRefResolutionTargetDirectory
+    </ResolveAssemblyReferencesDependsOn>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project=".\ida.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <!-- For some reason the TargetExt property is overriden somewhere in the build process. We must
+  force the value here to make sure everything gets compiled. -->
+  <PropertyGroup>
+    <TargetExt>.netmodule</TargetExt>
+  </PropertyGroup>
+</Project>
