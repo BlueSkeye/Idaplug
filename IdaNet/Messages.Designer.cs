@@ -70,6 +70,33 @@ namespace IdaNet {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to save database to &apos;{0}&apos;..
+        /// </summary>
+        internal static string DatabaseFailedToSave {
+            get {
+                return ResourceManager.GetString("DatabaseFailedToSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load &apos;{0}&apos; file..
+        /// </summary>
+        internal static string FileLoadFailed {
+            get {
+                return ResourceManager.GetString("FileLoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This operation is invalid until a database has been opened..
+        /// </summary>
+        internal static string NoDatabase {
+            get {
+                return ResourceManager.GetString("NoDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Guid attribute could be found on calling assembly &apos;{0}&apos;..
         /// </summary>
         internal static string NoGuidFoundOnCallingAssembly {
@@ -84,6 +111,24 @@ namespace IdaNet {
         internal static string NoGuidFoundOnIdaNet {
             get {
                 return ResourceManager.GetString("NoGuidFoundOnIdaNet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loader could be found for file &apos;{0}&apos;..
+        /// </summary>
+        internal static string NoLoaderFound {
+            get {
+                return ResourceManager.GetString("NoLoaderFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected loader returned by the loader chooser is not a known loader..
+        /// </summary>
+        internal static string SelectedLoaderNotGenuine {
+            get {
+                return ResourceManager.GetString("SelectedLoaderNotGenuine", resourceCulture);
             }
         }
     }

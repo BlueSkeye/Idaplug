@@ -24,6 +24,7 @@ namespace IdaNet
         #region CONSTRUCTORS
         private IdaDatabase()
         {
+            Current = this;
             return;
         }
         #endregion
@@ -43,11 +44,31 @@ namespace IdaNet
         /// </summary>
         /// <param name="filePath">Fully qualified or relative path to the file to be used.</param>
         /// <returns></returns>
-        public static IdaDatabase Create(string filePath)
+        public static IdaDatabase Create(string filePath, LoadFlags loadFlags)
         {
             lock (_globalLock) {
                 if (null != Current) { throw new IdaNetException(); }
-                return null;
+                IntPtr input = IntPtr.Zero;
+                
+                try {
+                    input = IdaNatives.open_linput(filePath, false);
+                    LoaderManager.LoadFile(filePath, loadFlags);
+                    return new IdaDatabase();
+                } finally { if (IntPtr.Zero != input) { IdaNatives.close_linput(input); } }
+            }
+        }
+
+        /// <summary>Save current database to the given file path.</summary>
+        /// <param name="toFilePath">Target file path.</param>
+        /// <param name="flags"></param>
+        public void Save(string toFilePath, DatabaseFlags flags)
+        {
+            if (null == Current) {
+                // Should never occur.
+                throw new InvalidOperationException(Messages.NoDatabase);
+            }
+            if (!IdaNatives.save_database_ex(toFilePath, flags, IntPtr.Zero, IntPtr.Zero)) {
+                throw new IdaNetException(Messages.DatabaseFailedToSave, toFilePath);
             }
         }
         #endregion
@@ -55,11 +76,6 @@ namespace IdaNet
         #region FIELDS
         private static IdaDatabase _currentDatabase;
         private static object _globalLock = new object();
-        #endregion
-
-        #region INTEROPS
-        [DllImport(Constants.IdaDllName, CallingConvention = CallingConvention.StdCall, CharSet=CharSet.Ansi)]
-        private static extern IntPtr open_linput(string file, bool remote);
         #endregion
     }
 }

@@ -30,5 +30,7 @@ namespace IdaNet
 #else
         internal const string IdaDllName = "ida.wll";
 #endif
+        internal const int QMAXPATH = 260;
+        internal const int MAX_FILE_FORMAT_NAME = 64;
     }
 }

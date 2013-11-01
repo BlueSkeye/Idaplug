@@ -48,6 +48,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="CppCompatibility\CppTyping.cs" />
     <Compile Include="CppCompatibility\IMarshalable.cs" />
+    <Compile Include="DatabaseFlags.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="IdaDatabase.cs" />
     <Compile Include="IdaInterop\AnalysisFlags.cs" />
@@ -125,8 +126,12 @@
     <Compile Include="IdaInterop\SwitchDefinitionFlags.cs" />
     <Compile Include="IdaInterop\SwitchDefinitionFlagsEx.cs" />
     <Compile Include="IdaInterop\UiNotificationType.cs" />
+    <Compile Include="IdaNatives.cs" />
     <Compile Include="IdaNetException.cs" />
     <Compile Include="IIdaPlugin.cs" />
+    <Compile Include="KnownFileType.cs" />
+    <Compile Include="LoaderManager.cs" />
+    <Compile Include="LoadFlags.cs" />
     <Compile Include="Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,6 +151,7 @@
     <EmbeddedResource Include="Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="SingleVersion.targets" />
