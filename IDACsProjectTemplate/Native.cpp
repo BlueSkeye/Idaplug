@@ -280,7 +280,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID /* lpRe
 // Initialize the glocal variable logFilePath with the full path to this plugin log file.
 bool InitializeLogFilePath()
 {
-	TCHAR pathSuffix[] = TEXT("\\idaplug\\logs\\helloworld.log");
+	TCHAR pathSuffix[] = TEXT("\\idaplug\\logs\\$safeprojectname$.log");
 	int logFilePathLength = MAX_PATH + 1;
 	PWSTR localAppDataPath;
 
@@ -335,7 +335,7 @@ int idaapi InitializePlugin()
 // C# class.
 void idaapi RunPlugin(int /* arg */)
 {
-	Log(TEXT("Running HelloWorld plugin\r\n"), 0);
+	Log(TEXT("Running $safeprojectname$ plugin\r\n"), 0);
 	if (!toManagedBridge) {
 		Log(TEXT("No bridge found. Ignoring.\r\n"), 0);
 		return;
