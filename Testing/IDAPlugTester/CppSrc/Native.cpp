@@ -280,7 +280,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID /* lpRe
 // Initialize the glocal variable logFilePath with the full path to this plugin log file.
 bool InitializeLogFilePath()
 {
-	TCHAR pathSuffix[] = TEXT("\\idaplug\\logs\\helloworld.log");
+	TCHAR pathSuffix[] = TEXT("\\idaplug\\logs\\IDAPlugTester.log");
 	int logFilePathLength = MAX_PATH + 1;
 	PWSTR localAppDataPath;
 
@@ -332,10 +332,10 @@ int idaapi InitializePlugin()
 }
 
 // Effectively runs the plugin. This implies transfering control to the bootloader
-// C# class.
+// C# class. The function is invoked once a file has been loaded in the database.
 void idaapi RunPlugin(int /* arg */)
 {
-	Log(TEXT("Running HelloWorld plugin\r\n"), 0);
+	Log(TEXT("Running IDAPlugTester plugin\r\n"), 0);
 	if (!toManagedBridge) {
 		Log(TEXT("No bridge found. Ignoring.\r\n"), 0);
 		return;
@@ -368,7 +368,6 @@ void idaapi TerminatePlugin()
 		_unmanagedPluginWrapper.pfnTerminate();
 		delete toManagedBridge;
 	}
-	Log(TEXT("Terminating plugin :\r\n"), 0);
 }
 
 #pragma managed(pop)

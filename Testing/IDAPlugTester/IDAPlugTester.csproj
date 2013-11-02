@@ -32,6 +32,11 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IdaNet32, Version=1.0.1.34072, Culture=neutral, PublicKeyToken=bbed5ac063856b59, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Users\jpforestier\AppData\Local\idaplug\bin\IdaNet32.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,9 +44,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="IdaNet32, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bbed5ac063856b59, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
@@ -58,6 +60,8 @@
     <None Include="CppSrc\Native.h" />
     <None Include="CppSrc\Native.cpp" />
     <None Include="CppSrc\PluginDef.cpp" />
+    <None Include="IdaPlugTester.idc" />
+    <None Include="TestIdaPlug.cmd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README" />

@@ -14,8 +14,8 @@ __declspec(dllexport) plugin_t PLUGIN =
 	InitializePlugin, // Initialisation function
 	TerminatePlugin, // Clean-up function
 	RunPlugin, // Main plug-in body
-	"IDA .Net loader", // Comment – unused
-	"IDA .Net loader", // As above – unused
-	"IDANetLoader", // Plug-in name shown in Edit->Plugins menu
+	"IDA Plug tester", // Comment – unused
+	"IDA Plug tester", // As above – unused
+	"IDAPlugTester", // Plug-in name shown in Edit->Plugins menu
 	"Alt-X" // Hot key to run the plug-in
 };

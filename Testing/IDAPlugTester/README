@@ -1,1 +1,8 @@
 ﻿This plugin is intended to test as mush functions of the IdaNet library as possible.
+The test scenario is as follow :
+
+- Start with an empty database (-t command line option).
+- Open a new database using NOTEPAD.EXE
+- Save the database into %LOCALAPPDATA%\idaplug\NOTEPAD.IDB
+- Close the database
+- Reload the previously saved database from %LOCALAPPDATA%\idaplug\NOTEPAD.IDB
